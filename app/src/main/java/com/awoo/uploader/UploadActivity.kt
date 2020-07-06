@@ -66,7 +66,11 @@ class UploadActivity : AppCompatActivity() {
 
     private fun loadIntent() {
         uri = if (intent.action == Intent.ACTION_SEND) {
-            intent.getParcelableExtra(Intent.EXTRA_STREAM)!!
+            if (intent.type == "text/plain") {
+                intent.getParcelableExtra(Intent.EXTRA_HTML_TEXT)
+            } else if (intent.type == "image/*") {
+                intent.getParcelableExtra(Intent.EXTRA_STREAM) as Uri
+            }
         } else {
             intent.data!!
         }
